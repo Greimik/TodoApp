@@ -40,7 +40,7 @@
             </select>
           </div>
         </div>
-        <div class="">
+        <div>
           <button class="btn btn-primary">Dodaj zadanie</button>
         </div>
       </form>
@@ -67,12 +67,24 @@
         </tbody>
       </table>
       <div class="row">
-        <div class="col-md-6 mx-auto">
-          <label class="custom-file-label" for="importButton">Iport</label
-          ><input type="file" class="custom-file-input" id="importButton" />
+        <div class="col-md-6 ">
+          <form>
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="validatedCustomFile"
+                required
+              />
+              <label class="custom-file-label" for="validatedCustomFile"
+                >Importuj zadania</label
+              >
+
+            </div>
+          </form>
         </div>
-        <div class="col-md-6 mx-auto">
-          <button class="btn btn-primary btn-wide">Export</button>
+        <div class="col-md-6">
+          <button class="btn btn-primary btn-wide">Exportuj zadania</button>
         </div>
       </div>
     </div>
