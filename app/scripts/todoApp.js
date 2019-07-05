@@ -32,15 +32,12 @@ const newTask = (taskName, taskPriority) => {
   switch (taskPriority) {
     case "Wysoki":
       tr.classList.add("highPriority");
-      priorytyValue = 3;
       break;
     case "Średni":
       tr.classList.add("mediumPriority");
-      priorytyValue = 2;
       break;
     case "Niski":
       tr.classList.add("lowPriority");
-      priorytyValue = 1;
       break;
     default:
       break;
@@ -55,6 +52,21 @@ const newTask = (taskName, taskPriority) => {
 
 newTaskForm.addEventListener("submit", function(e) {
   e.preventDefault();
+
+  switch (select.value) {
+    case "Wysoki":
+      priorytyValue = 3;
+      break;
+    case "Średni":
+      priorytyValue = 2;
+      break;
+    case "Niski":
+      priorytyValue = 1;
+      break;
+
+    default:
+      break;
+  }
 
   tasksArray.push({
     taskName: taskName.value,
@@ -168,9 +180,11 @@ sortTaskPriorityDescButton.addEventListener("click", function(e) {
 
 importButton.addEventListener("change", function(e) {
   e.preventDefault();
-  const listFiles = this.files;
+  const listFiles = this.files[0];
   let reader = new FileReader();
-  reader.onload =e=>{
-      console.log(e.target.files)
-  }
+  reader.onload = function() {
+    localStorage.setItem("tasks", reader.result);
+  };
+  reader.readAsText(listFiles);
+  location.reload();
 });
