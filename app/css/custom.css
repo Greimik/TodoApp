@@ -1,3 +1,16 @@
-.taskPriorytyLabel{
-    display: block;
+.taskPriorytyLabel {
+  display: block;
+}
+.highPriority {
+  background-color: #e74c3c;
+  color: white;
+}
+.mediumPriority {
+  background-color: #F39C12;
+  color: white;
+}
+
+.lowPriority {
+  background-color: #27AE60;
+  color: white;
 }
