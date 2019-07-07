@@ -7,16 +7,6 @@ const select = document.querySelector("select");
 let priorytyValue = 0;
 const importButton = document.getElementById("importButton");
 const exportButton = document.getElementById("exportButton");
-const sortTaskNameAscButton = document.getElementById("sortTaskNameAscButton");
-const sortTaskNameDescButton = document.getElementById(
-  "sortTaskNameDescButton"
-);
-const sortTaskPriorityAscButton = document.getElementById(
-  "sortTaskPriorityAscButton"
-);
-const sortTaskPriorityDescButton = document.getElementById(
-  "sortTaskPriorityDescButton"
-);
 
 let tasksArray = localStorage.getItem("tasks")
   ? JSON.parse(localStorage.getItem("tasks"))
@@ -82,17 +72,6 @@ data.forEach(task => {
   newTask(task.taskName, task.taskPriority);
 });
 
-window.addEventListener("load", event => {
-  //   let tmpTasks = [
-  //     { taskName: "C1", taskPriority: "Wysoki", priorytyValue: 3 },
-  //     { taskName: "B2", taskPriority: "Średni", priorytyValue: 2 },
-  //     { taskName: "A3", taskPriority: "Niski", priorytyValue: 1 },
-  //     { taskName: "C3", taskPriority: "Średni", priorytyValue: 2 },
-  //     { taskName: "B1", taskPriority: "Średni", priorytyValue: 2 },
-  //     { taskName: "A2", taskPriority: "Wysoki", priorytyValue: 3 }
-  //   ];
-  //   localStorage.setItem("tasks", JSON.stringify(tmpTasks));
-});
 
 exportButton.addEventListener("click", function(e) {
   e.preventDefault();
@@ -106,77 +85,7 @@ exportButton.addEventListener("click", function(e) {
   link.click();
 });
 
-sortTaskNameAscButton.addEventListener("click", function(e) {
-  e.preventDefault();
 
-  if (localStorage.getItem("tasks").length > 0) {
-    let arrayItems = [];
-    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
-    itemToSort.map(task => {
-      arrayItems.push(task);
-    });
-    let sortedItems = arrayItems.sort((a, b) =>
-      a.taskName > b.taskName ? 1 : -1
-    );
-    localStorage.removeItem("tasks");
-    localStorage.setItem("tasks", JSON.stringify(sortedItems));
-    location.reload();
-  }
-});
-
-sortTaskNameDescButton.addEventListener("click", function(e) {
-  e.preventDefault();
-
-  if (localStorage.getItem("tasks").length > 0) {
-    let arrayItems = [];
-    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
-    itemToSort.map(task => {
-      arrayItems.push(task);
-    });
-    let sortedItems = arrayItems.sort((a, b) =>
-      a.taskName > b.taskName ? -1 : 1
-    );
-    localStorage.removeItem("tasks");
-    localStorage.setItem("tasks", JSON.stringify(sortedItems));
-    location.reload();
-  }
-});
-
-sortTaskPriorityAscButton.addEventListener("click", function(e) {
-  e.preventDefault();
-
-  if (localStorage.getItem("tasks").length > 0) {
-    let arrayItems = [];
-    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
-    itemToSort.map(task => {
-      arrayItems.push(task);
-    });
-    let sortedItems = arrayItems.sort((a, b) =>
-      a.priorytyValue > b.priorytyValue ? 1 : -1
-    );
-    localStorage.removeItem("tasks");
-    localStorage.setItem("tasks", JSON.stringify(sortedItems));
-    location.reload();
-  }
-});
-
-sortTaskPriorityDescButton.addEventListener("click", function(e) {
-  e.preventDefault();
-
-  if (localStorage.getItem("tasks").length > 0) {
-    let arrayItems = [];
-    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
-    itemToSort.map(task => {
-      arrayItems.push(task);
-    });
-    let sortedItems = arrayItems.sort((a, b) =>
-      a.priorytyValue > b.priorytyValue ? -1 : 1
-    );
-    localStorage.removeItem("tasks");
-    localStorage.setItem("tasks", JSON.stringify(sortedItems));
-    location.reload();
-  }
-});
 
 importButton.addEventListener("change", function(e) {
   e.preventDefault();
@@ -188,3 +97,24 @@ importButton.addEventListener("change", function(e) {
   reader.readAsText(listFiles);
   location.reload();
 });
+
+
+function sortAsc(key) {
+  let itemToSort = JSON.parse(localStorage.getItem("tasks"));
+  let sortedItems = itemToSort.sort((a, b) =>
+      a[key] > b[key] ? 1 : -1
+    );
+    localStorage.removeItem("tasks");
+    localStorage.setItem("tasks", JSON.stringify(sortedItems));
+    location.reload();
+}
+
+function sortDesc(key) {
+  let itemToSort = JSON.parse(localStorage.getItem("tasks"));
+  let sortedItems = itemToSort.sort((a, b) =>
+      a[key] > b[key] ? -1 : 1
+    );
+    localStorage.removeItem("tasks");
+    localStorage.setItem("tasks", JSON.stringify(sortedItems));
+    location.reload();
+}
