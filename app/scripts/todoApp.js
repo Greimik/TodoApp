@@ -1,4 +1,14 @@
 $("select").select2({ dropdownCssClass: "dropdown-inverse" });
+let constants = {
+  HIGH_PRIORITY: "Wysoki",
+  MEDIUM_PRIORITY: "Średni",
+  LOW_PRIORITY: "Niski",
+  FAKE_TASK: "fake",
+  LOCAL_STORAGE_TASKS_ITEM:"tasks",
+  HIGH_PRIORITY_CSS_CLASS:"highPriority",
+  MEDIUM_PRIORITY_CSS_CLASS:"mediumPriority",
+  LOW_PRIORITY_CSS_CLASS:"lowPriority",
+};
 let toDoList = {
   tasksArray: new Array()
 };
@@ -6,12 +16,12 @@ toDoList.newTaskForm = document.getElementById("newTaskForm");
 toDoList.taskName = document.getElementById("taskName");
 toDoList.tbody = document.querySelector("tbody");
 toDoList.select = document.getElementById("taskSelect");
-toDoList.taskType = document.getElementById("taskType")
+toDoList.taskType = document.getElementById("taskType");
 toDoList.priorytyValue = 0;
-toDoList.tasksArray = localStorage.getItem("tasks")
-  ? JSON.parse(localStorage.getItem("tasks"))
+toDoList.tasksArray = localStorage.getItem(constants.LOCAL_STORAGE_TASKS_ITEM)
+  ? JSON.parse(localStorage.getItem(constants.LOCAL_STORAGE_TASKS_ITEM))
   : [];
-localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
+localStorage.setItem(constants.LOCAL_STORAGE_TASKS_ITEM, JSON.stringify(toDoList.tasksArray));
 
 (toDoList.newTask = function(taskName, taskPriority) {
   const tr = document.createElement("tr");
@@ -19,14 +29,14 @@ localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
   const td2 = document.createElement("td");
 
   switch (taskPriority) {
-    case "Wysoki":
-      tr.classList.add("highPriority");
+    case constants.HIGH_PRIORITY:
+      tr.classList.add(constants.HIGH_PRIORITY_CSS_CLASS);
       break;
-    case "Średni":
-      tr.classList.add("mediumPriority");
+    case constants.MEDIUM_PRIORITY:
+      tr.classList.add(constants.MEDIUM_PRIORITY_CSS_CLASS);
       break;
-    case "Niski":
-      tr.classList.add("lowPriority");
+    case constants.LOW_PRIORITY:
+      tr.classList.add(constants.LOW_PRIORITY_CSS_CLASS);
       break;
     default:
       break;
@@ -41,46 +51,55 @@ localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
   (toDoList.newTaskForm = addEventListener("submit", function(e) {
     e.preventDefault();
     switch (toDoList.select.value) {
-      case "Wysoki":
+      case constants.HIGH_PRIORITY:
         toDoList.priorytyValue = 3;
         break;
-      case "Średni":
+      case constants.MEDIUM_PRIORITY:
         toDoList.priorytyValue = 2;
         break;
-      case "Niski":
+      case constants.LOW_PRIORITY:
         toDoList.priorytyValue = 1;
         break;
 
       default:
         break;
     }
-    if (toDoList.taskType.value === "fake") {
+    if (toDoList.taskType.value === constants.FAKE_TASK) {
       fetch("https://jsonplaceholder.typicode.com/todos/1")
         .then(response => response.json())
         .then(json => {
-          toDoList.tasksArray.push({
-            taskName: json.title,
-            taskPriority: toDoList.select.value,
-            priorytyValue: toDoList.priorytyValue
-          });
-          localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
-          toDoList.newTask(json.title, toDoList.select.value);
-          taskName.value = "";
+          toDoList.addItemsToArray(
+            json.title,
+            toDoList.select.value,
+            toDoList.priorytyValue
+          );
         });
     } else {
-      toDoList.tasksArray.push({
-        taskName: taskName.value,
-        taskPriority: toDoList.select.value,
-        priorytyValue: toDoList.priorytyValue
-      });
-      localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
-      toDoList.newTask(taskName.value, toDoList.select.value);
-      taskName.value = "";
+      toDoList.addItemsToArray(
+        toDoList.taskName.value,
+        toDoList.select.value,
+        toDoList.priorytyValue
+      );
     }
   })),
   toDoList.tasksArray.forEach(task => {
     toDoList.newTask(task.taskName, task.taskPriority);
+  }),
+  (toDoList.addItems = function(itemsToAdd) {
+    localStorage.removeItem(constants.LOCAL_STORAGE_TASKS_ITEM);
+    localStorage.setItem(constants.LOCAL_STORAGE_TASKS_ITEM, JSON.stringify(itemsToAdd));
+    location.reload();
   });
+toDoList.addItemsToArray = function(taskName, taskPriority, priorytyValue) {
+  toDoList.tasksArray.push({
+    taskName: taskName,
+    taskPriority: taskPriority,
+    priorytyValue: priorytyValue
+  });
+  localStorage.setItem(constants.LOCAL_STORAGE_TASKS_ITEM, JSON.stringify(toDoList.tasksArray));
+  toDoList.newTask(taskName, taskPriority);
+  toDoList.taskName.value = "";
+};
 
 let storing = {
   importButton: document.getElementById("importButton"),
@@ -90,7 +109,7 @@ let storing = {
 
     let dataUri =
       "data:application/json;charset=UTF-8," +
-      encodeURIComponent(localStorage.getItem("tasks"));
+      encodeURIComponent(localStorage.getItem(constants.LOCAL_STORAGE_TASKS_ITEM));
     let link = document.createElement("a");
     link.setAttribute("href", dataUri);
     link.setAttribute("download", "todo.json");
@@ -102,7 +121,7 @@ let storing = {
     const listFiles = this.files[0];
     let reader = new FileReader();
     reader.onload = function() {
-      localStorage.setItem("tasks", reader.result);
+      localStorage.setItem(constants.LOCAL_STORAGE_TASKS_ITEM, reader.result);
     };
     reader.readAsText(listFiles);
     location.reload();
@@ -111,18 +130,14 @@ let storing = {
 
 let sortingFunctinos = {
   sortAsc: key => {
-    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
+    let itemToSort = JSON.parse(localStorage.getItem(constants.LOCAL_STORAGE_TASKS_ITEM));
     let sortedItems = itemToSort.sort((a, b) => (a[key] > b[key] ? 1 : -1));
-    localStorage.removeItem("tasks");
-    localStorage.setItem("tasks", JSON.stringify(sortedItems));
-    location.reload();
+    toDoList.addItems(sortedItems);
   },
 
   sortDesc: key => {
-    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
+    let itemToSort = JSON.parse(localStorage.getItem(constants.LOCAL_STORAGE_TASKS_ITEM));
     let sortedItems = itemToSort.sort((a, b) => (a[key] > b[key] ? -1 : 1));
-    localStorage.removeItem("tasks");
-    localStorage.setItem("tasks", JSON.stringify(sortedItems));
-    location.reload();
+    toDoList.addItems(sortedItems);
   }
 };
