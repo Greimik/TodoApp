@@ -1,127 +1,97 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="utf-8" />
-    <title>Flat UI Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Loading Bootstrap -->
-    <link href="css/vendor/bootstrap.min.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="fonts/glyphicons/flat-ui-pro-icons-regular.eot"
-    />
-    <!-- Loading Flat UI Pro -->
-    <link href="css/flat-ui.css" rel="stylesheet" />
+<head>
+  <meta charset="utf-8" />
+  <title>Flat UI Template</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="css/custom.css" />
-  </head>
+  <!-- Loading Bootstrap -->
+  <link href="css/vendor/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="fonts/glyphicons/flat-ui-pro-icons-regular.eot" />
+  <!-- Loading Flat UI Pro -->
+  <link href="css/flat-ui.css" rel="stylesheet" />
 
-  <body>
-    <div class="container mt-4">
-      <form id="newTaskForm">
-        <div class="row">
-            <div class="col">
-                <label for="taskType" class="taskPriorytyLabel"
-                  >Rodzaj zadania</label
-                >
-                <select id="taskType" class="form-control select select-primary select-block mbl">
-                  <optgroup label="Rodzaj">
-                    <option value="real">Prawdziwy</option>
-                    <option value="fake">Zmyślony</option>
-                  </optgroup>
-                </select>
-              </div>
-          <div class="col">
-            <label for="taskName">Treść zadania</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Treść zadania"
-              id="taskName"
-              required
-            />
-          </div>
-          <div class="col">
-            <label for="taskPriority" class="taskPriorytyLabel"
-              >Priorytet zadania</label
-            >
-            <select id="taskSelect" class="form-control select select-primary select-block mbl">
-              <optgroup label="Priorytet">
-                <option value="Wysoki">Wysoki</option>
-                <option value="Średni">Średni</option>
-                <option value="Niski">Niski</option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-        <div>
-          <input type="submit" class="btn btn-primary" value="Dodaj zadanie" />
-        </div>
-      </form>
-      <table class="table mt-4">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">
-              Nazwa zadania
-              <a href="" onclick="sortingFunctinos.sortAsc('taskName')"
-                ><span class="fui-triangle-up"></span></a
-              ><a href="" onclick="sortingFunctinos.sortDesc('taskName')"
-                ><span class="fui-triangle-down"></span
-              ></a>
-            </th>
-            <th scope="col">
-              Priorytet zadania
-              <a href="" onclick="sortingFunctinos.sortAsc('priorytyValue')"
-                ><span class="fui-triangle-up"></span></a
-              ><a href="" onclick="sortingFunctinos.sortDesc('priorytyValue')"
-                ><span class="fui-triangle-down"></span
-              ></a>
-            </th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <link rel="stylesheet" href="css/custom.css" />
+</head>
+
+<body>
+  <div class="container mt-4">
+    <form id="newTaskForm">
       <div class="row">
-        <div class="col-md-6 ">
-          <form>
-            <div class="custom-file mb-3">
-              <input
-                type="file"
-                class="custom-file-input"
-                id="importButton"
-                required
-              />
-              <label class="custom-file-label" for="importButton"
-                >Importuj zadania</label
-              >
-            </div>
-          </form>
+        <div class="col">
+          <label for="taskType" class="taskPriorytyLabel">Rodzaj zadania</label>
+          <select id="taskType" class="form-control select select-primary select-block mbl">
+            <optgroup label="Rodzaj">
+              <option value="real">Prawdziwy</option>
+              <option value="fake">Zmyślony</option>
+            </optgroup>
+          </select>
         </div>
-        <div class="col-md-6 mb-2">
-          <button id="exportButton" class="btn btn-primary btn-wide">
-            Exportuj zadania
-          </button>
+        <div class="col">
+          <label for="taskName">Treść zadania</label>
+          <input type="text" class="form-control" placeholder="Treść zadania" id="taskName" required />
+        </div>
+        <div class="col">
+          <label for="taskPriority" class="taskPriorytyLabel">Priorytet zadania</label>
+          <select id="taskSelect" class="form-control select select-primary select-block mbl">
+            <optgroup label="Priorytet">
+              <option value="Wysoki">Wysoki</option>
+              <option value="Średni">Średni</option>
+              <option value="Niski">Niski</option>
+            </optgroup>
+          </select>
         </div>
       </div>
+      <div>
+        <input type="submit" class="btn btn-primary" value="Dodaj zadanie" />
+      </div>
+    </form>
+    <table class="table mt-4">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">
+            Nazwa zadania
+            <a href="" onclick="sortingFunctinos.sortAsc('taskName')"><span class="fui-triangle-up"></span></a><a
+              href="" onclick="sortingFunctinos.sortDesc('taskName')"><span class="fui-triangle-down"></span></a>
+          </th>
+          <th scope="col">
+            Priorytet zadania
+            <a href="" onclick="sortingFunctinos.sortAsc('priorytyValue')"><span class="fui-triangle-up"></span></a><a
+              href="" onclick="sortingFunctinos.sortDesc('priorytyValue')"><span class="fui-triangle-down"></span></a>
+          </th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="row">
+      <div class="col-md-6 ">
+        <form>
+          <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="importButton" required />
+            <label class="custom-file-label" for="importButton">Importuj zadania</label>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6 mb-2">
+        <button id="exportButton" class="btn btn-primary btn-wide">
+          Exportuj zadania
+        </button>
+      </div>
     </div>
+  </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap 4 requires Popper.js -->
-    <script
-      src="https://unpkg.com/popper.js@1.14.1/dist/umd/popper.min.js"
-      crossorigin="anonymous"
-    ></script>
+  <!-- Bootstrap 4 requires Popper.js -->
+  <script src="https://unpkg.com/popper.js@1.14.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 
-    <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
+  <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
 
-    <script src="scripts/flat-ui.js"></script>
-    <script src="scripts/todoApp.js"></script>
-  </body>
+  <script src="scripts/flat-ui.js"></script>
+  <script src="scripts/todoApp.js"></script>
+</body>
+
 </html>
