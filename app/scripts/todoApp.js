@@ -1,46 +1,46 @@
 $("select").select2({ dropdownCssClass: "dropdown-inverse" });
 let toDoList = {
-  tasksArray : new Array()
-}
+  tasksArray: new Array()
+};
 toDoList.newTaskForm = document.getElementById("newTaskForm");
 toDoList.taskName = document.getElementById("taskName");
 toDoList.tbody = document.querySelector("tbody");
-toDoList.select = document.querySelector("select");
+toDoList.select = document.getElementById("taskSelect");
+toDoList.taskType = document.getElementById("taskType");
 toDoList.priorytyValue = 0;
 toDoList.tasksArray = localStorage.getItem("tasks")
-? JSON.parse(localStorage.getItem("tasks"))
-: []
+  ? JSON.parse(localStorage.getItem("tasks"))
+  : [];
 localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
 
+(toDoList.newTask = function(taskName, taskPriority) {
+  const tr = document.createElement("tr");
+  const td1 = document.createElement("td");
+  const td2 = document.createElement("td");
 
-toDoList.newTask=function (taskName, taskPriority) {
-    const tr = document.createElement("tr");
-    const td1 = document.createElement("td");
-    const td2 = document.createElement("td");
+  switch (taskPriority) {
+    case "Wysoki":
+      tr.classList.add("highPriority");
+      break;
+    case "Średni":
+      tr.classList.add("mediumPriority");
+      break;
+    case "Niski":
+      tr.classList.add("lowPriority");
+      break;
+    default:
+      break;
+  }
 
-    switch (taskPriority) {
-      case "Wysoki":
-        tr.classList.add("highPriority");
-        break;
-      case "Średni":
-        tr.classList.add("mediumPriority");
-        break;
-      case "Niski":
-        tr.classList.add("lowPriority");
-        break;
-      default:
-        break;
-    }
-
-    toDoList.tbody.appendChild(tr);
-    td1.textContent = taskName;
-    td2.textContent = taskPriority;
-    tr.appendChild(td1);
-    tr.appendChild(td2);
-  },
-  toDoList.newTaskForm=addEventListener("submit", function(e) {
+  toDoList.tbody.appendChild(tr);
+  td1.textContent = taskName;
+  td2.textContent = taskPriority;
+  tr.appendChild(td1);
+  tr.appendChild(td2);
+}),
+  (toDoList.newTaskForm = addEventListener("submit", function(e) {
     e.preventDefault();
-
+    this.console.log(taskType.value);
     switch (toDoList.select.value) {
       case "Wysoki":
         priorytyValue = 3;
@@ -55,20 +55,37 @@ toDoList.newTask=function (taskName, taskPriority) {
       default:
         break;
     }
-
-    toDoList.tasksArray.push({
-      taskName: taskName.value,
-      taskPriority: toDoList.select.value,
-      priorytyValue: priorytyValue
-    });
-    localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
-    toDoList.newTask(taskName.value, toDoList.select.value);
-    taskName.value = "";
-  }),
+    if (toDoList.taskType.value === "fake") {
+      fetch("https://jsonplaceholder.typicode.com/todos/1")
+        .then(response => response.json())
+        .then(json => {
+          toDoList.tasksArray.push({
+            taskName: json.title,
+            taskPriority: toDoList.select.value,
+            priorytyValue: toDoList.priorytyValue
+          });
+          localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
+          toDoList.newTask(json.title, toDoList.select.value);
+          taskName.value = "";
+        });
+    } else {
+      toDoList.tasksArray.push({
+        taskName: taskName.value,
+        taskPriority: toDoList.select.value,
+        priorytyValue: toDoList.priorytyValue
+      });
+      localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
+      toDoList.newTask(taskName.value, toDoList.select.value);
+      taskName.value = "";
+    }
+  })),
   toDoList.tasksArray.forEach(task => {
     toDoList.newTask(task.taskName, task.taskPriority);
-  })
+  });
 
+toDoList.taskType.addEventListener("change", event => {
+  console.log("taskType");
+});
 
 let storing = {
   importButton: document.getElementById("importButton"),
