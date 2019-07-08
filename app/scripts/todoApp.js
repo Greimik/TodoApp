@@ -1,74 +1,75 @@
 $("select").select2({ dropdownCssClass: "dropdown-inverse" });
+let toDoList = {
+  tasksArray : new Array()
+}
+toDoList.newTaskForm = document.getElementById("newTaskForm");
+toDoList.taskName = document.getElementById("taskName");
+toDoList.tbody = document.querySelector("tbody");
+toDoList.select = document.querySelector("select");
+toDoList.priorytyValue = 0;
+toDoList.tasksArray = localStorage.getItem("tasks")
+? JSON.parse(localStorage.getItem("tasks"))
+: []
+localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
 
-const newTaskForm = document.getElementById("newTaskForm");
-const taskName = document.getElementById("taskName");
-const tbody = document.querySelector("tbody");
-const select = document.querySelector("select");
-let priorytyValue = 0;
 
-let tasksArray = localStorage.getItem("tasks")
-  ? JSON.parse(localStorage.getItem("tasks"))
-  : [];
-localStorage.setItem("tasks", JSON.stringify(tasksArray));
-const data = JSON.parse(localStorage.getItem("tasks"));
+toDoList.newTask=function (taskName, taskPriority) {
+    const tr = document.createElement("tr");
+    const td1 = document.createElement("td");
+    const td2 = document.createElement("td");
 
-const newTask = (taskName, taskPriority) => {
-  const tr = document.createElement("tr");
-  const td1 = document.createElement("td");
-  const td2 = document.createElement("td");
+    switch (taskPriority) {
+      case "Wysoki":
+        tr.classList.add("highPriority");
+        break;
+      case "Średni":
+        tr.classList.add("mediumPriority");
+        break;
+      case "Niski":
+        tr.classList.add("lowPriority");
+        break;
+      default:
+        break;
+    }
 
-  switch (taskPriority) {
-    case "Wysoki":
-      tr.classList.add("highPriority");
-      break;
-    case "Średni":
-      tr.classList.add("mediumPriority");
-      break;
-    case "Niski":
-      tr.classList.add("lowPriority");
-      break;
-    default:
-      break;
-  }
+    toDoList.tbody.appendChild(tr);
+    td1.textContent = taskName;
+    td2.textContent = taskPriority;
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+  },
+  toDoList.newTaskForm=addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  tbody.appendChild(tr);
-  td1.textContent = taskName;
-  td2.textContent = taskPriority;
-  tr.appendChild(td1);
-  tr.appendChild(td2);
-};
+    switch (toDoList.select.value) {
+      case "Wysoki":
+        priorytyValue = 3;
+        break;
+      case "Średni":
+        priorytyValue = 2;
+        break;
+      case "Niski":
+        priorytyValue = 1;
+        break;
 
-newTaskForm.addEventListener("submit", function(e) {
-  e.preventDefault();
+      default:
+        break;
+    }
 
-  switch (select.value) {
-    case "Wysoki":
-      priorytyValue = 3;
-      break;
-    case "Średni":
-      priorytyValue = 2;
-      break;
-    case "Niski":
-      priorytyValue = 1;
-      break;
+    toDoList.tasksArray.push({
+      taskName: taskName.value,
+      taskPriority: toDoList.select.value,
+      priorytyValue: priorytyValue
+    });
+    localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
+    toDoList.newTask(taskName.value, toDoList.select.value);
+    taskName.value = "";
+  }),
+  toDoList.tasksArray.forEach(task => {
+    toDoList.newTask(task.taskName, task.taskPriority);
+  })
 
-    default:
-      break;
-  }
 
-  tasksArray.push({
-    taskName: taskName.value,
-    taskPriority: select.value,
-    priorytyValue: priorytyValue
-  });
-  localStorage.setItem("tasks", JSON.stringify(tasksArray));
-  newTask(taskName.value, select.value);
-  taskName.value = "";
-});
-
-data.forEach(task => {
-  newTask(task.taskName, task.taskPriority);
-});
 let storing = {
   importButton: document.getElementById("importButton"),
   exportButton: document.getElementById("exportButton"),
