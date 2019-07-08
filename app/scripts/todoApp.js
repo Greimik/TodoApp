@@ -6,7 +6,7 @@ toDoList.newTaskForm = document.getElementById("newTaskForm");
 toDoList.taskName = document.getElementById("taskName");
 toDoList.tbody = document.querySelector("tbody");
 toDoList.select = document.getElementById("taskSelect");
-toDoList.taskType = document.getElementById("taskType");
+toDoList.taskType = document.getElementById("taskType")
 toDoList.priorytyValue = 0;
 toDoList.tasksArray = localStorage.getItem("tasks")
   ? JSON.parse(localStorage.getItem("tasks"))
@@ -40,16 +40,15 @@ localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
 }),
   (toDoList.newTaskForm = addEventListener("submit", function(e) {
     e.preventDefault();
-    this.console.log(taskType.value);
     switch (toDoList.select.value) {
       case "Wysoki":
-        priorytyValue = 3;
+        toDoList.priorytyValue = 3;
         break;
       case "Średni":
-        priorytyValue = 2;
+        toDoList.priorytyValue = 2;
         break;
       case "Niski":
-        priorytyValue = 1;
+        toDoList.priorytyValue = 1;
         break;
 
       default:
@@ -82,10 +81,6 @@ localStorage.setItem("tasks", JSON.stringify(toDoList.tasksArray));
   toDoList.tasksArray.forEach(task => {
     toDoList.newTask(task.taskName, task.taskPriority);
   });
-
-toDoList.taskType.addEventListener("change", event => {
-  console.log("taskType");
-});
 
 let storing = {
   importButton: document.getElementById("importButton"),
