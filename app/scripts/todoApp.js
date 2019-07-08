@@ -1,15 +1,5 @@
 $("select").select2({ dropdownCssClass: "dropdown-inverse" });
-let constants = {
-  HIGH_PRIORITY: "Wysoki",
-  MEDIUM_PRIORITY: "Średni",
-  LOW_PRIORITY: "Niski",
-  FAKE_TASK: "fake",
-  LOCAL_STORAGE_TASKS_ITEM:"tasks",
-  HIGH_PRIORITY_CSS_CLASS:"highPriority",
-  MEDIUM_PRIORITY_CSS_CLASS:"mediumPriority",
-  LOW_PRIORITY_CSS_CLASS:"lowPriority",
-  EXPORT_NAME_FILE:"todo.json"
-};
+
 let toDoList = {
   tasksArray: new Array()
 };
