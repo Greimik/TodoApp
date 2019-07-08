@@ -8,6 +8,7 @@ let constants = {
   HIGH_PRIORITY_CSS_CLASS:"highPriority",
   MEDIUM_PRIORITY_CSS_CLASS:"mediumPriority",
   LOW_PRIORITY_CSS_CLASS:"lowPriority",
+  EXPORT_NAME_FILE:"todo.json"
 };
 let toDoList = {
   tasksArray: new Array()
@@ -112,7 +113,7 @@ let storing = {
       encodeURIComponent(localStorage.getItem(constants.LOCAL_STORAGE_TASKS_ITEM));
     let link = document.createElement("a");
     link.setAttribute("href", dataUri);
-    link.setAttribute("download", "todo.json");
+    link.setAttribute("download", constants.EXPORT_NAME_FILE);
     link.click();
   }),
 
