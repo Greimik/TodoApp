@@ -5,8 +5,6 @@ const taskName = document.getElementById("taskName");
 const tbody = document.querySelector("tbody");
 const select = document.querySelector("select");
 let priorytyValue = 0;
-const importButton = document.getElementById("importButton");
-const exportButton = document.getElementById("exportButton");
 
 let tasksArray = localStorage.getItem("tasks")
   ? JSON.parse(localStorage.getItem("tasks"))
@@ -71,50 +69,47 @@ newTaskForm.addEventListener("submit", function(e) {
 data.forEach(task => {
   newTask(task.taskName, task.taskPriority);
 });
+let storing = {
+  importButton: document.getElementById("importButton"),
+  exportButton: document.getElementById("exportButton"),
+  export: exportButton.addEventListener("click", function(e) {
+    e.preventDefault();
 
+    let dataUri =
+      "data:application/json;charset=UTF-8," +
+      encodeURIComponent(localStorage.getItem("tasks"));
+    let link = document.createElement("a");
+    link.setAttribute("href", dataUri);
+    link.setAttribute("download", "todo.json");
+    link.click();
+  }),
 
-exportButton.addEventListener("click", function(e) {
-  e.preventDefault();
+  import: importButton.addEventListener("change", function(e) {
+    e.preventDefault();
+    const listFiles = this.files[0];
+    let reader = new FileReader();
+    reader.onload = function() {
+      localStorage.setItem("tasks", reader.result);
+    };
+    reader.readAsText(listFiles);
+    location.reload();
+  })
+};
 
-  let dataUri =
-    "data:application/json;charset=UTF-8," +
-    encodeURIComponent(localStorage.getItem("tasks"));
-  let link = document.createElement("a");
-  link.setAttribute("href", dataUri);
-  link.setAttribute("download", "todo.json");
-  link.click();
-});
-
-
-
-importButton.addEventListener("change", function(e) {
-  e.preventDefault();
-  const listFiles = this.files[0];
-  let reader = new FileReader();
-  reader.onload = function() {
-    localStorage.setItem("tasks", reader.result);
-  };
-  reader.readAsText(listFiles);
-  location.reload();
-});
-
-
-function sortAsc(key) {
-  let itemToSort = JSON.parse(localStorage.getItem("tasks"));
-  let sortedItems = itemToSort.sort((a, b) =>
-      a[key] > b[key] ? 1 : -1
-    );
+let sortingFunctinos = {
+  sortAsc: key => {
+    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
+    let sortedItems = itemToSort.sort((a, b) => (a[key] > b[key] ? 1 : -1));
     localStorage.removeItem("tasks");
     localStorage.setItem("tasks", JSON.stringify(sortedItems));
     location.reload();
-}
+  },
 
-function sortDesc(key) {
-  let itemToSort = JSON.parse(localStorage.getItem("tasks"));
-  let sortedItems = itemToSort.sort((a, b) =>
-      a[key] > b[key] ? -1 : 1
-    );
+  sortDesc: key => {
+    let itemToSort = JSON.parse(localStorage.getItem("tasks"));
+    let sortedItems = itemToSort.sort((a, b) => (a[key] > b[key] ? -1 : 1));
     localStorage.removeItem("tasks");
     localStorage.setItem("tasks", JSON.stringify(sortedItems));
     location.reload();
-}
+  }
+};
